@@ -1,0 +1,752 @@
+/* ==========================
+   Shared base styles
+   (moved here so all pages reuse the same sidebar / topbar / nav styles)
+   ========================== */
+
+/* Basic Reset & typography */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Default UI font - pages may override with page-specific fonts if needed */
+body, html { 
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Topbar height variable used to keep fixed topbar and content spacing consistent */
+:root {
+  /* slightly increased topbar height to prevent header from overlapping content */
+  --topbar-height: 72px; /* increased from 64px to add a bit more spacing */
+  --sidebar-width: 240px;
+}
+
+body.sidebar-open {
+  overflow: hidden;
+}
+
+/* Links: remove underline across the app and inherit color */
+a { text-decoration: none; color: inherit; }
+
+/* Page-level layout */
+.container { 
+  display: flex; 
+  width: 100%; 
+  min-height: 100vh; 
+  position: relative;
+}
+
+/* Mobile menu button */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  /* sit above the topbar so it's always clickable */
+  z-index: 1201;
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-toggle:hover {
+  background: #f3f4f6;
+}
+
+.menu-toggle .material-symbols-rounded {
+  font-size: 24px;
+  color: #111827;
+}
+
+/* Sidebar overlay for mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Sidebar (shared) */
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.brand img { width: 36px; height: 36px; border-radius: 50%; }
+.church-icon-sidebar {
+  font-size: 32px;
+  color: #2563eb;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.brand-text h2 { color: #1f2937; font-size: 1.05rem; line-height: 1.2; }
+.brand-text span { color: #9ca3af; font-size: 0.85rem; }
+
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.menu li { margin-bottom: 8px; }
+.menu li a { display: flex; align-items: center; gap: 12px; color: #374151; padding: 12px; border-radius: 10px; cursor: pointer; transition: background .18s ease, color .18s ease; }
+.menu li a .icon { color: #111827; opacity: .85; display: inline-flex; font-size: 20px; line-height: 1; }
+.menu li.active a, .menu li a.active { background: #e5edff; color: #1f48ff; }
+.menu li a:hover { background: #f3f4f6; }
+.menu li.active a .icon, .menu li a.active .icon { color: #1f48ff; }
+
+.bottom { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+.settings-btn, .logout-btn { display: flex; align-items: center; gap: 10px; background: transparent; color: #374151; padding: 10px 12px; border-radius: 10px; cursor: pointer; text-decoration: none; transition: background .18s ease; }
+.settings-btn .icon, .logout-btn .icon { font-size: 20px; }
+.settings-btn:hover, .settings-btn.active, .logout-btn:hover { background: #f3f4f6; }
+.settings-btn.active { background: #e5edff; color: #1f48ff; }
+.settings-btn.active .icon { color: #1f48ff; }
+.logout-btn { color: #ef4444; }
+
+/* Topbar (shared) - General Navigation Bar */
+.topbar { 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 0 clamp(20px, 2.5vw, 32px);
+  height: var(--topbar-height);
+  border-bottom: 1px solid #e5e7eb;
+  width: 100%;
+  position: fixed; /* fixed to viewport so it sits at the very top */
+  top: 0;
+  left: 0; /* overridden on desktop to account for sidebar width */
+  z-index: 1100; /* sit above main content but below sidebar if necessary */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Left - Title */
+.topbar-title {
+  font-size: clamp(1.3rem, 1.6vw, 1.8rem); 
+  color: #111827;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Right side - Profile */
+.profile {
+  display: flex; 
+  align-items: center; 
+  gap: clamp(10px, 1.2vw, 14px);
+}
+.profile img { 
+  width: clamp(32px, 3vw, 40px); 
+  height: clamp(32px, 3vw, 40px); 
+  border-radius: 50%; 
+}
+.notification-icon { 
+  position: relative; 
+  cursor: pointer; 
+}
+.notification-icon .material-symbols-rounded { 
+  font-size: clamp(22px, 2.2vw, 26px); 
+  color: #374151; 
+}
+.notification-dot { 
+  position: absolute; 
+  top: 2px; 
+  right: 2px; 
+  width: 8px; 
+  height: 8px; 
+  background: #ef4444; 
+  border-radius: 50%; 
+  border: 2px solid #fff; 
+}
+.profile-info { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 2px; 
+}
+.profile-name { 
+  font-size: clamp(0.9rem, 1vw, 1rem); 
+  color: #111827; 
+  font-weight: 500; 
+}
+.profile-role { 
+  font-size: clamp(0.75rem, 0.85vw, 0.85rem); 
+  color: #9ca3af; 
+}
+
+/* Make chart canvases responsive by default */
+.chart-card canvas { width: 100% !important; height: auto !important; }
+
+/* Responsive helpers (kept here) */
+/* Fluid base sizing to better handle browser zoom (80%-125%) */
+html { font-size: clamp(14px, 0.95vw + 9px, 16px); }
+
+/* Responsive main content - scales to available space */
+.main-content { 
+  width: 100%;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  height: 100vh;
+  padding-top: var(--topbar-height); /* prevent content from being hidden beneath the fixed topbar */
+}
+
+/* Desktop: Add margin for fixed sidebar */
+@media (min-width: 769px) {
+  .main-content {
+    margin-left: var(--sidebar-width);
+  }
+  
+  .sidebar {
+    position: fixed;
+  }
+
+  /* On desktop align the fixed topbar to the right of the sidebar */
+  .topbar {
+    left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1366px) {
+  .main-content {
+    margin-left: 220px;
+  }
+}
+
+/* Keep topbar aligned when sidebar width changes in this breakpoint */
+@media (min-width: 901px) and (max-width: 1366px) {
+  :root { --sidebar-width: 220px; }
+  .topbar { left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
+  .main-content { margin-left: var(--sidebar-width); }
+}
+
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+  .main-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+/* Touch-friendly improvements */
+@media (max-width: 768px) {
+  /* Larger touch targets */
+  /* show hamburger on mobile */
+  .menu-toggle { display: flex; }
+  .menu li a,
+  .settings-btn,
+  .logout-btn {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  button,
+  .add-btn,
+  .filter-btn,
+  .export-btn,
+  .page-btn {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Prevent text size adjustment on iOS */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  /* Better tap highlighting */
+  a,
+  button {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Large screens (1024px+) - Full width layout */
+@media (min-width: 1024px) {
+  .stats { 
+    grid-template-columns: repeat(4, 1fr) !important; 
+    gap: clamp(16px, 1.5vw, 24px);
+    margin-bottom: clamp(24px, 3vh, 40px);
+  }
+  .charts { 
+    grid-template-columns: 2fr 1fr !important; 
+    gap: clamp(16px, 1.5vw, 24px);
+  }
+  .topbar-title { 
+    font-size: clamp(1.4rem, 1.8vw, 2rem); 
+  }
+  .card { 
+    padding: clamp(16px, 1.5vw, 24px); 
+  }
+  .chart-card { 
+    padding: clamp(16px, 1.5vw, 24px); 
+  }
+  .chart-card canvas { 
+    height: clamp(220px, 28vh, 380px) !important; 
+  }
+  .donut .donut-wrap { 
+    max-width: clamp(260px, 28vh, 420px); 
+  }
+}
+
+/* Very large screens (1440px+) - Optimize spacing */
+@media (min-width: 1440px) {
+  .main-content {
+    padding: clamp(20px, 2vw, 40px) clamp(30px, 3vw, 60px);
+  }
+  .stats {
+    gap: clamp(20px, 2vw, 28px);
+    margin-bottom: clamp(32px, 3.5vh, 48px);
+  }
+  .charts {
+    gap: clamp(20px, 2vw, 28px);
+  }
+  .card {
+    padding: clamp(20px, 2vw, 28px);
+  }
+  .chart-card {
+    padding: clamp(20px, 2vw, 28px);
+  }
+  .chart-card canvas {
+    height: clamp(280px, 32vh, 420px) !important;
+  }
+  .donut .donut-wrap {
+    max-width: clamp(300px, 32vh, 480px);
+  }
+}
+
+/* Ultra-wide screens (1920px+) - Maximum utilization */
+@media (min-width: 1920px) {
+  .main-content {
+    padding: clamp(30px, 2.5vw, 50px) clamp(40px, 4vw, 80px);
+  }
+  .stats {
+    gap: clamp(24px, 2.5vw, 32px);
+    margin-bottom: clamp(40px, 4vh, 56px);
+  }
+  .charts {
+    gap: clamp(24px, 2.5vw, 32px);
+  }
+  .card {
+    padding: clamp(24px, 2.5vw, 32px);
+  }
+  .chart-card {
+    padding: clamp(24px, 2.5vw, 32px);
+  }
+  .chart-card canvas {
+    height: clamp(320px, 35vh, 480px) !important;
+  }
+  .donut .donut-wrap {
+    max-width: clamp(360px, 35vh, 540px);
+  }
+}
+
+@media (max-width: 1366px) {
+  .sidebar { width: 220px; }
+  .main-content { 
+    padding: clamp(16px, 1.5vw, 24px) clamp(20px, 2vw, 30px); 
+  }
+  .charts { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 1366px) {
+  :root { --sidebar-width: 220px; }
+  .topbar { left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
+  .main-content { margin-left: var(--sidebar-width); }
+}
+
+@media (max-width: 1024px) {
+  .charts { grid-template-columns: 1fr; }
+  .donut .donut-wrap { max-width: 420px; }
+}
+
+@media (max-width: 900px) {
+  .sidebar { width: 200px; }
+  .menu li { padding: 10px 10px; }
+  .stats { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
+
+@media (max-width: 900px) and (min-width: 769px) {
+  /* On narrower desktops/tablets where sidebar is shrunk to 200px keep topbar aligned */
+  :root { --sidebar-width: 200px; }
+  .topbar { left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
+  .main-content { margin-left: var(--sidebar-width); }
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Show hamburger menu */
+  .menu-toggle {
+    display: flex;
+  }
+
+  /* Sidebar hidden by default on mobile */
+  .sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  /* Main content takes full width on mobile */
+  .main-content {
+    margin-left: 0;
+    padding: 20px 16px;
+    padding-top: calc(var(--topbar-height) + 16px);
+  }
+
+  /* Topbar adjustments */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: clamp(12px, 1.5vh, 16px) 16px;
+    padding-left: 72px;
+    margin-top: 0;
+  }
+
+  /* On mobile keep the topbar full-width and reset the sidebar width variable */
+  :root { --sidebar-width: 0px; }
+  .topbar { left: 0; width: 100%; }
+
+  .topbar-title {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  .profile {
+    width: auto;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .profile-info {
+    display: none;
+  }
+
+  .profile-name {
+    display: none;
+  }
+
+  .notification-icon {
+    margin-right: 0;
+  }
+
+  /* Stats grid - single column on mobile */
+  .stats {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .card-icon {
+    top: 16px;
+    right: 16px;
+    font-size: 20px;
+  }
+
+  /* Charts stack vertically on mobile */
+  .charts {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+
+  .chart-card {
+    padding: 16px;
+  }
+
+  .chart-card canvas {
+    height: 250px !important;
+  }
+
+  .donut canvas {
+    height: 250px !important;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .donut .donut-wrap {
+    max-width: 100%;
+  }
+
+  /* Responsive tables */
+  .table-container,
+  .records-container,
+  .data-table,
+  table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    width: 100%;
+  }
+
+  table {
+    display: table;
+    min-width: 600px;
+  }
+
+  /* Forms and filters */
+  .filters,
+  .filter-group,
+  .top-bar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .filters .filter-item,
+  .filter-group {
+    width: 100%;
+  }
+
+  .buttons,
+  .export-options,
+  .qr-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .buttons button,
+  .export-options button,
+  .qr-actions button {
+    width: 100%;
+  }
+
+  /* Search boxes and inputs */
+  .search-box,
+  .input-box,
+  .link-box {
+    width: 100%;
+  }
+
+  /* QR Card responsive */
+  .qr-card {
+    flex-direction: column;
+  }
+
+  .qr-image {
+    text-align: center;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 16px 12px;
+    padding-top: 75px;
+  }
+
+  .topbar {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: clamp(10px, 1.2vh, 14px) 12px;
+    padding-left: 72px;
+  }
+
+  .topbar-title {
+    font-size: 1.3rem;
+    margin: 0;
+  }
+
+  .profile {
+    width: auto;
+    justify-content: flex-end;
+  }
+
+  .notification-icon .material-symbols-rounded {
+    font-size: 20px;
+  }
+
+  .profile img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .card h3 {
+    font-size: 0.9rem;
+  }
+
+  .card .value {
+    font-size: 1.4rem;
+  }
+
+  .growth {
+    font-size: 0.85rem;
+  }
+
+  .chart-card {
+    padding: 14px;
+  }
+
+  .chart-card h3 {
+    font-size: 1rem;
+  }
+
+  .chart-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .chart-card canvas {
+    height: 220px !important;
+  }
+
+  .donut canvas {
+    height: 220px !important;
+  }
+
+  .sidebar {
+    width: 260px;
+  }
+
+  /* Table responsive improvements */
+  table {
+    font-size: 0.85rem;
+  }
+
+  table th,
+  table td {
+    padding: 8px 4px;
+  }
+
+  /* Button adjustments */
+  button,
+  .add-btn,
+  .filter-btn,
+  .export-btn {
+    font-size: 0.9rem;
+    padding: 10px 16px;
+  }
+
+  /* Filter sections */
+  .filters-section,
+  .attendance-section {
+    padding: 0;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .main-content {
+    padding: 20px 24px;
+    margin-left: 220px;
+  }
+
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .charts {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Table responsive on tablet */
+  .table-container,
+  .records-container {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 800px;
+  }
+
+  /* Forms better spacing */
+  .filters {
+    flex-wrap: wrap;
+  }
+
+  .filter-item,
+  .filter-group {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 200px;
+  }
+}
+
+
+

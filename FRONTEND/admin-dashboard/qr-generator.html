@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Generator | Church Admin</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/qr-generator.css" />
+  <style>
+    /* Page-specific styles to match screenshot */
+    :root{
+      --page-bg: #f3f6f9;
+      --card-bg: #ffffff;
+      --muted: #6b7280;
+      --primary: #0a57d0;
+      --surface-shadow: 0 6px 20px rgba(15,23,42,0.06);
+      --radius: 12px;
+    }
+    .page-wrap { max-width:1100px; margin:0 auto; padding:20px 24px; }
+    .header-row { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:18px; }
+    .header-row h1 { font-size:28px; margin:0; color:#0f172a; }
+    .create-session-btn { background:var(--primary); color:#fff; padding:10px 16px; border-radius:10px; border:0; cursor:pointer; font-weight:600; }
+
+    .card { background:var(--card-bg); border-radius:var(--radius); box-shadow:var(--surface-shadow); padding:22px; }
+    .qr-card { display:grid; grid-template-columns:320px 1fr; gap:28px; align-items:center; }
+    .qr-preview { background:#fbfdff; border-radius:10px; padding:18px; display:flex; align-items:center; justify-content:center; }
+    .qr-preview img { width:260px; height:260px; object-fit:cover; border-radius:6px; }
+
+    .qr-details h3 { margin:0; font-size:18px; color:#111827; }
+    .qr-details p.lead { color:var(--muted); margin-top:6px; }
+
+    .link-row { display:flex; gap:10px; align-items:center; margin-top:18px; }
+    .link-input { flex:1; padding:10px 12px; border-radius:8px; border:1px solid #e6e9ee; background:#f8fafc; color:#0f172a; }
+    .icon-btn { padding:10px 12px; border-radius:8px; border:0; background:#f3f4f6; cursor:pointer; }
+
+    .action-buttons { display:flex; gap:12px; margin-top:12px; }
+    .btn-primary { background:var(--primary); color:#fff; border:0; padding:10px 16px; border-radius:8px; cursor:pointer; }
+    .btn-muted { background:#f3f4f6; color:#111827; border:0; padding:10px 14px; border-radius:8px; cursor:pointer; }
+
+    .note { color:#9ca3af; font-size:13px; margin-top:12px; }
+
+    .history { margin-top:22px; }
+    .history .card { padding:18px; }
+    table.history-table { width:100%; border-collapse:collapse; font-size:14px; }
+    .history-table thead th { color:var(--muted); text-align:left; padding:12px 8px; border-bottom:1px solid #eef2f6; }
+    .history-table tbody td { padding:14px 8px; border-bottom:1px solid #f1f5f9; color:#111827; }
+    .status-badge { display:inline-block; padding:6px 10px; border-radius:999px; font-size:13px; }
+    .status-active { background:#dcfce7; color:#065f46; }
+    .status-closed { background:#fee2e2; color:#991b1b; }
+    .actions-cell { display:flex; justify-content:flex-end; gap:10px; }
+    .action-icon { background:#f8fafc; padding:8px; border-radius:8px; cursor:pointer; border:1px solid #eef2f6; }
+
+    @media (max-width:900px) {
+      .qr-card { grid-template-columns:1fr; }
+      .qr-preview img { width:200px; height:200px; }
+      .page-wrap { padding:16px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile Menu Toggle -->
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+    <span class="material-symbols-rounded">menu</span>
+  </button>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="material-symbols-rounded church-icon-sidebar">church</span>
+        <div class="brand-text">
+          <h2>Church Admin</h2>
+          <span>Welcome Back</span>
+        </div>
+      </div>
+      <ul class="menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="icon material-symbols-rounded" aria-hidden="true">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="members.html">
+            <span class="icon material-symbols-rounded" aria-hidden="true">group</span>
+            <span>Members</span>
+          </a>
+        </li>
+        <li>
+          <a href="attendance.html">
+            <span class="icon material-symbols-rounded" aria-hidden="true">event_available</span>
+            <span>Attendance</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="qr-generator.html">
+            <span class="icon material-symbols-rounded" aria-hidden="true">qr_code_2</span>
+            <span>QR Generator</span>
+          </a>
+        </li>
+        <li>
+          <a href="reports.html">
+            <span class="icon material-symbols-rounded" aria-hidden="true">insert_chart</span>
+            <span>Reports</span>
+          </a>
+        </li>
+      </ul>
+      <div class="bottom">
+        <a href="settings.html" class="settings-btn">  
+          <span class="icon material-symbols-rounded" aria-hidden="true">settings</span>
+          <span>Settings</span>
+        </a>
+        <a href="#" class="logout-btn" id="logoutBtn">
+          <span class="icon material-symbols-rounded" aria-hidden="true">logout</span>
+          <span>Log Out</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <header class="topbar">
+        <h1 class="topbar-title">Attendance QR Code Generator</h1>
+        <div class="profile">
+          <div class="notification-icon">
+            <span class="material-symbols-rounded">notifications</span>
+            <span class="notification-dot"></span>
+          </div>
+          <img src="assets/images/profile.jpg" alt="Admin" />
+          <div class="profile-info">
+            <span class="profile-name">John Doe</span>
+            <span class="profile-role">Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+    <header class="header-row">
+      <h1>Sunday Morning Service QR Code</h1>
+      <button class="create-session-btn">+ Create New Attendance Session</button>
+    </header>
+
+    <section class="card qr-card">
+      <div class="qr-preview">
+        <img src="assets/images/qr-placeholder.svg" alt="Sunday Morning Service QR Code" style="width:260px; height:260px; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.05);" />
+      </div>
+
+      <div class="qr-details">
+        <h3>Sunday Morning Service - August 25, 2024</h3>
+        <p class="lead">Your attendance link and QR code have been generated successfully.</p>
+
+        <div class="link-row">
+          <input class="link-input" type="text" readonly value="https://church.events/attendance/session/xyz123" />
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn-primary">⬇ Download QR Code</button>
+          <button class="btn-muted">🔗 Share</button>
+          <button class="btn-muted">🖨 Print</button>
+        </div>
+
+        <p class="note">You can download the QR code image or print it for display at the entrance.</p>
+      </div>
+    </section>
+
+    <section class="history">
+      <div class="card">
+        <h3 style="margin:0 0 12px 0">Attendance Sessions History</h3>
+        <div style="overflow:auto;margin-top:8px;">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Service Name</th>
+                <th>Date</th>
+                <th>Attendance</th>
+                <th>Status</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody">
+              <tr>
+                <td>Sunday Morning Service</td>
+                <td>August 25, 2024</td>
+                <td>152</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td class="actions-cell">
+                  <button class="action-icon" title="QR"><span class="material-symbols-rounded">qr_code</span></button>
+                  <button class="action-icon" title="View"><span class="material-symbols-rounded">visibility</span></button>
+                  <button class="action-icon" title="Lock"><span class="material-symbols-rounded">lock</span></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Youth Fellowship</td>
+                <td>August 23, 2024</td>
+                <td>45</td>
+                <td><span class="status-badge status-closed">Closed</span></td>
+                <td class="actions-cell">
+                  <button class="action-icon" title="QR"><span class="material-symbols-rounded">qr_code</span></button>
+                  <button class="action-icon" title="View"><span class="material-symbols-rounded">visibility</span></button>
+                  <button class="action-icon" title="Lock"><span class="material-symbols-rounded">lock</span></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Mid-week Bible Study</td>
+                <td>August 21, 2024</td>
+                <td>78</td>
+                <td><span class="status-badge status-closed">Closed</span></td>
+                <td class="actions-cell">
+                  <button class="action-icon" title="QR"><span class="material-symbols-rounded">qr_code</span></button>
+                  <button class="action-icon" title="View"><span class="material-symbols-rounded">visibility</span></button>
+                  <button class="action-icon" title="Lock"><span class="material-symbols-rounded">lock</span></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

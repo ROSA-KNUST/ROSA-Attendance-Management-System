@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Members | Church Admin</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/members.css" />
+</head>
+<body>
+  <!-- Mobile Menu Toggle -->
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+    <span class="material-symbols-rounded">menu</span>
+  </button>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="material-symbols-rounded church-icon-sidebar">church</span>
+        <div class="brand-text">
+          <h2>Church Admin</h2>
+          <span>Welcome Back</span>
+        </div>
+      </div>
+      <ul class="menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="icon material-symbols-rounded" aria-hidden="true">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="members.html">
+            <span class="icon material-symbols-rounded" aria-hidden="true">group</span>
+            <span>Members</span>
+          </a>
+        </li>
+        <li>
+          <a href="attendance.html">
+            <span class="icon material-symbols-rounded" aria-hidden="true">event_available</span>
+            <span>Attendance</span>
+          </a>
+        </li>
+        <li>
+          <a href="qr-generator.html">
+            <span class="icon material-symbols-rounded" aria-hidden="true">qr_code_2</span>
+            <span>QR Generator</span>
+          </a>
+        </li>
+        <li>
+          <a href="reports.html">
+            <span class="icon material-symbols-rounded" aria-hidden="true">insert_chart</span>
+            <span>Reports</span>
+          </a>
+        </li>
+      </ul>
+      <div class="bottom">
+        <a href="settings.html" class="settings-btn">  
+          <span class="icon material-symbols-rounded" aria-hidden="true">settings</span>
+          <span>Settings</span>
+        </a>
+        <a href="#" class="logout-btn" id="logoutBtn">
+          <span class="icon material-symbols-rounded" aria-hidden="true">logout</span>
+          <span>Log Out</span>
+        </a>
+      </div>
+    </aside>
+    
+    <!-- Main -->
+    <main class="main-content">
+      <header class="topbar">
+        <h1 class="topbar-title">Members</h1>
+        <div class="profile">
+          <div class="notification-icon">
+            <span class="material-symbols-rounded">notifications</span>
+            <span class="notification-dot"></span>
+          </div>
+          <img src="assets/images/profile.jpg" alt="Admin" />
+          <div class="profile-info">
+            <span class="profile-name">John Doe</span>
+            <span class="profile-role">Admin</span>
+          </div>
+        </div>
+      </header>
+      <p class="subtitle">Manage and view all church members.</p>
+
+      <div class="top-bar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search members..." />
+        </div>
+
+        <div class="buttons">
+          <button class="filter-btn">
+            <i class="fa-solid fa-sliders"></i> Filters
+          </button>
+          <button class="add-btn">
+            + Add New Member
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox" /></th>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Status</th>
+              <th>Join Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="member-info">
+                  <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="">
+                  <span>John Doe</span>
+                </div>
+              </td>
+              <td class="blue-text">Youth Ministry</td>
+              <td><span class="status active">Active</span></td>
+              <td>2023-03-15</td>
+              <td><i class="fa-solid fa-ellipsis"></i></td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="member-info">
+                  <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="">
+                  <span>Jane Smith</span>
+                </div>
+              </td>
+              <td class="blue-text">Choir</td>
+              <td><span class="status active">Active</span></td>
+              <td>2022-11-20</td>
+              <td><i class="fa-solid fa-ellipsis"></i></td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="member-info">
+                  <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="">
+                  <span>Michael Brown</span>
+                </div>
+              </td>
+              <td class="blue-text">Ushering</td>
+              <td><span class="status inactive">Inactive</span></td>
+              <td>2021-01-10</td>
+              <td><i class="fa-solid fa-ellipsis"></i></td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="member-info">
+                  <img src="https://randomuser.me/api/portraits/women/4.jpg" alt="">
+                  <span>Emily Johnson</span>
+                </div>
+              </td>
+              <td class="blue-text">Youth Ministry</td>
+              <td><span class="status active">Active</span></td>
+              <td>2023-08-05</td>
+              <td><i class="fa-solid fa-ellipsis"></i></td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="member-info">
+                  <img src="https://randomuser.me/api/portraits/men/5.jpg" alt="">
+                  <span>David Wilson</span>
+                </div>
+              </td>
+              <td class="blue-text">Choir</td>
+              <td><span class="status visitor">Visitor</span></td>
+              <td>2024-02-18</td>
+              <td><i class="fa-solid fa-ellipsis"></i></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="member-info">
+                  <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="">
+                  <span>John Doe</span>
+                </div>
+              </td>
+              <td class="blue-text">Youth Ministry</td>
+              <td><span class="status active">Active</span></td>
+              <td>2023-03-15</td>
+              <td><i class="fa-solid fa-ellipsis"></i></td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="member-info">
+                  <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="">
+                  <span>Jane Smith</span>
+                </div>
+              </td>
+              <td class="blue-text">Choir</td>
+              <td><span class="status active">Active</span></td>
+              <td>2022-11-20</td>
+              <td><i class="fa-solid fa-ellipsis"></i></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
