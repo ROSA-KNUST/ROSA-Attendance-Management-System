@@ -1,0 +1,78 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+    font-family: "Inter", sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column; /* <--- flex-col equivalent */
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    padding: auto;
+}
+
+/* Logo */
+.logo img {
+    width: 45px;
+    opacity: 0.85;
+}
+
+/* Loader section */
+.loader-section {
+    display: flex;
+    flex-direction: column; /* stacked vertically */
+    align-items: center;
+    gap: 20px;
+}
+
+/* Spinner */
+.spinner {
+    width: 55px;
+    height: 55px;
+    border: 5px solid #d8c27f33;
+    border-top-color: #c7a323;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Status text */
+.status-text {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+
+/* Progress bar */
+.progress-bar {
+    width: 260px;
+    height: 10px;
+    background: #ece7d0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress {
+    width: 80%;        /* Adjust loading level */
+    height: 100%;
+    background: #c7a323;
+}
+
+/* Footer */
+footer {
+    font-size: 16px;
+    color: #808080;
+    opacity: 0.9;
+}
