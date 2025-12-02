@@ -1,413 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Attendance QR Code Generator</title>
-<link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance QR Code Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: #f5f5f7;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .header-content p {
+            font-size: 1.1rem;
+            color: #86868b;
+            font-weight: 400;
+        }
+
+        .create-btn {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+        }
+
+        .create-btn:hover {
+            background-color: #0052a3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        .create-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 102, 204, 0.2);
+        }
+
+        .create-btn::before {
+            content: "⊕";
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+        }
+
+        .card-header p {
+            font-size: 1rem;
+            color: #86868b;
+            margin-bottom: 30px;
+        }
+
+        .content-area {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .qr-preview {
+            background-color: #f5e6dc;
+            border-radius: 12px;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-card {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 280px;
+        }
+
+        .qr-card-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .qr-card-subtitle {
+            font-size: 0.75rem;
+            color: #86868b;
+            margin-bottom: 20px;
+        }
+
+        .qr-code-placeholder {
+            width: 180px;
+            height: 180px;
+            background: white;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .qr-pattern {
+            width: 160px;
+            height: 160px;
+            background-image:
+                linear-gradient(0deg, #000 2px, transparent 2px),
+                linear-gradient(90deg, #000 2px, transparent 2px);
+            background-size: 8px 8px;
+            opacity: 0.8;
+        }
+
+        .qr-center-logo {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #0066cc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .qr-footer {
+            font-size: 0.7rem;
+            color: #86868b;
+            line-height: 1.4;
+        }
+
+        .link-section {
+            margin-bottom: 30px;
+        }
+
+        .link-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .link-input-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f7;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 12px 16px;
+            gap: 12px;
+        }
+
+        .link-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #1d1d1f;
+            font-size: 0.95rem;
+        }
+
+        .copy-icon {
+            cursor: pointer;
+            color: #86868b;
+            font-size: 1.2rem;
+            transition: color 0.2s ease;
+        }
+
+        .copy-icon:hover {
+            color: #0066cc;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #0066cc;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #0052a3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background-color: #e5e5e7;
+            color: #1d1d1f;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1d1d6;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(0);
+        }
+
+        .btn-icon {
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 968px) {
+            .content-area {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-<header class="header-row">
-    <div class="text-block">
-    <h1 class="tight">Attendance QR Code Generator</h1>
-    <p class="sub-text">Create unique attendance links and QR codes for your services and events.</p>
-    </div>
-    <a href="#" id="createSessionBtn" class="button">⊕ Create New Attendance Session</a>
-</header>
-
-<main class="faint-box" id="sectionContainer">
-    <div class="session-header">
-        <h2 id="eventTitle">Sunday Morning Service</h2>
-        <p id="eventSubText">Your attendance link and QR code have been generated successfully</p>
-    </div>
-    <div class="session-box" id="sessionBox">
-    <div class="qr-preview">
-        <div id="qrcode"></div>
-    </div>
-    <div class="session-details">
-        <label>Attendance Link</label>
-        <div class="link-box">
-        <input type="text" id="eventLink" readonly />
-        <button id="copyBtn">📋</button>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>Attendance QR Code Generator</h1>
+                <p>Create unique attendance links and QR codes for your services and events.</p>
+            </div>
+            <button class="create-btn">Create New Attendance Session</button>
         </div>
 
-        <div class="qr-actions">
-            <button class="small-btn download" id="downloadBtn">⬇ Download QR Code</button>
-            <button class="small-btn share" id="shareBtn">🔗 Share</button>
-            <button class="small-btn print" id="printBtn">🖨 Print</button>
+        <div class="card">
+            <div class="card-header">
+                <h2>Sunday Morning Service - August 25, 2024</h2>
+                <p>Your attendance link and QR code have been generated successfully.</p>
+            </div>
+
+            <div class="content-area">
+                <div class="qr-preview">
+                    <div class="qr-card">
+                        <div class="qr-card-title">Sunday Morning</div>
+                        <div class="qr-card-subtitle">Scan to mark attendance</div>
+                        <div class="qr-code-placeholder">
+                            <div class="qr-pattern"></div>
+                            <div class="qr-center-logo">P</div>
+                        </div>
+                        <div class="qr-footer">
+                            church.events/attendance<br>
+                            Expires: Sunday at 1:00 PM
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="link-section">
+                        <label class="link-label">Attendance Link</label>
+                        <div class="link-input-wrapper">
+                            <input type="text" class="link-input" value="https://church.events/attendance/session/xyz123" readonly>
+                            <span class="copy-icon" title="Copy link">📋</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">
+                            <span class="btn-icon">⬇</span>
+                            Download QR Code
+                        </button>
+                        <button class="btn btn-secondary">
+                            <span class="btn-icon">⤴</span>
+                            Share
+                        </button>
+                        <button class="btn btn-secondary">
+                            <span class="btn-icon">🖨</span>
+                            Print
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
     </div>
-    </div>
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-<script src="script.js"></script>
 </body>
 </html>
-
-
-<button class="small-btn download"></button>
-            <button class="small-btn share"></button>
-            <button class="small-btn print">Print</button>
-
-
-
-
-            style.css
-
-            body {
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #f5f7fb;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
-
-.header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 30px 60px;
-    background: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.text-block h1 {
-    margin: 0;
-    font-size: 1.6rem;
-    color: #1e3a8a;
-}
-
-.sub-text {
-    color: #555;
-    font-size: 0.95rem;
-}
-
-.button {
-    background-color: #2563eb;
-    color: white;
-    text-decoration: none;
-    padding: 12px 18px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 15px;
-    transition: transform 0.3s ease, background 0.25s ease;
-    display: inline-block;
-}
-
-.button:hover {
-    background-color: #da70b7;
-    transform: scale(1.08);
-}
-
-.faint-box {
-    width: 85%;
-    margin: 40px auto;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-    padding: 40px 60px;
-}
-
-.session-header {
-    text-align: left;
-    margin-bottom: 25px;
-}
-
-.session-header h2 {
-    color: #1e3a8a;
-    font-size: 1.4rem;
-    margin-bottom: 6px;
-}
-
-.session-header p {
-    color: #555;
-    font-size: 0.95rem;
-    margin: 0;
-}
-
-.session-box {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 40px;
-    background: linear-gradient(145deg, #fff, #f8faff);
-    border-radius: 14px;
-    padding: 30px 40px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    margin-top: 25px;
-}
-
-.text-part {
-    flex: 1;
-    padding-right: 20px;
-}
-
-.text-part h2 {
-    color: #007acc;
-    margin-top: 0;
-}
-
-.url-display {
-    font-size: 13px;
-    color: #555;
-    margin: 10px 0;
-    word-break: break-all;
-}
-
-.qr-preview {
-    background: #fbeee8;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.05);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 180px;
-    min-height: 180px;
-}
-
-#qrcode {
-    width: 150px;
-    height: 150px;
-}
-
-.session-details {
-    flex: 1;
-}
-
-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.link-box {
-    display: flex;
-    align-items: center;
-    background: #f1f3f9;
-    border: 1px solid #e0e5ef;
-    border-radius: 8px;
-    padding: 8px;
-}
-
-.link-box input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-size: 0.95rem;
-    padding: 6px;
-    outline: none;
-}
-
-.link-box button {
-    border: none;
-    background: transparent;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.button-row {
-    margin-top: 16px;
-    display: flex;
-    gap: 10px;
-}
-
-.btn {
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.btn.primary {
-    background: #2563eb;
-    color: white;
-}
-
-.btn.primary:hover {
-    background: #1e40af;
-}
-
-.btn:hover {
-    background: #e5e7eb;
-}
-
-.info-text {
-    font-size: 13px;
-    color: #555;
-    margin-top: 12px;
-    font-style: italic;
-}
-
-.note-text {
-    font-size: 13px;
-    color: #777;
-    margin-top: 10px;
-}
-
-.qr-actions {
-    margin-top: 16px;
-    display: flex;
-    gap: 10px;
-}
-
-.qr-actions .small-btn {
-    border: none;
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.small-btn.download {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-}
-.small-btn.share {
-    background: linear-gradient(135deg, #6c63ff, #4b47d4);
-}
-.small-btn.print {
-    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
-}
-
-.small-btn.download:hover {
-    transform: scale(1.08);
-    background: linear-gradient(135deg, #27ae60, #2ecc71);
-    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.4);
-}
-
-.small-btn.share:hover {
-    transform: scale(1.08);
-    background: linear-gradient(135deg, #4b47d4, #6c63ff);
-    box-shadow: 0 4px 10px rgba(108, 99, 255, 0.4);
-}
-
-.small-btn.print:hover {
-    transform: scale(1.08);
-    background: linear-gradient(135deg, #7f8c8d, #95a5a6);
-    box-shadow: 0 4px 10px rgba(127, 140, 141, 0.4);
-}
-
-
-
-const qrContainer = document.getElementById("qrcode");
-const linkInput = document.getElementById("eventLink");
-const createBtn = document.getElementById("createSessionBtn");
-const title = document.getElementById("eventTitle");
-const subText = document.getElementById("eventSubText");
-
-createBtn.addEventListener("click", generateQRCode);
-window.onload = generateQRCode;
-
-function generateQRCode() {
-qrContainer.innerHTML = "";
-
-// Ask for session title
-let eventName = prompt("Enter the title for this attendance session:", "Sunday Morning Service");
-if (!eventName || eventName.trim() === "") {
-    eventName = "Unnamed Session";
-}
-
-const eventId = Math.random().toString(36).substring(2, 8).toUpperCase();
-const today = new Date();
-const formattedDate = today.toLocaleDateString("en-US", { 
-    year: "numeric", 
-    month: "long", 
-    day: "numeric" 
-});
-
-const eventURL = `https://ROSA-KNUST/attendance/session/${eventId}`;
-
-title.textContent = `${eventName} - ${formattedDate}`;
-subText.textContent = "Your attendance link and QR code have been generated successfully.";
-
-linkInput.value = eventURL;
-
-// Generate QR code
-new QRCode(qrContainer, {
-    text: eventURL,
-    width: 150,
-    height: 150,
-});
-}
-
-// --- COPY LINK ---
-document.getElementById("copyBtn").onclick = () => {
-if (!linkInput.value) return alert("No link to copy yet!");
-navigator.clipboard.writeText(linkInput.value);
-alert("Link copied to clipboard!");
-};
-
-// --- DOWNLOAD QR ---
-document.getElementById("downloadBtn").onclick = () => {
-const img = qrContainer.querySelector("img");
-if (!img) return alert("Generate a QR code first!");
-const link = document.createElement("a");
-link.href = img.src;
-link.download = "attendance_qr.png";
-link.click();
-};
-
-// --- SHARE LINK ---
-document.getElementById("shareBtn").onclick = async () => {
-const link = linkInput.value;
-if (!link) return alert("Generate a link first!");
-
-if (navigator.share) {
-    await navigator.share({
-    title: "Attendance Check-in",
-    text: "Scan this QR or use the link to check in.",
-    url: link,
-    });
-} else {
-    await navigator.clipboard.writeText(link);
-    alert("Sharing not supported on this device.\nLink copied to clipboard instead!");
-}
-};
-
-
-
-script.js
-
-
-// --- PRINT QR ---
-document.getElementById("printBtn").onclick = () => {
-const qrImg = qrContainer.querySelector("img");
-if (!qrImg) return alert("Generate a QR code first!");
-
-const newWin = window.open("");
-newWin.document.write(`
-    <html>
-    <head>
-        <title>Print QR Code</title>
-        <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 40px;
-        }
-        img {
-            width: 200px;
-            height: 200px;
-        }
-        </style>
-    </head>
-    <body>
-        <h3>${title.textContent}</h3>
-        <img src="${qrImg.src}" alt="QR Code"><br>
-        <p>${linkInput.value}</p>
-    </body>
-    </html>
-`);
-newWin.document.close();
-newWin.print();
-};
