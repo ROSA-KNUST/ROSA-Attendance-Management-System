@@ -4,357 +4,417 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Generator | Church Admin</title>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="stylesheet" href="assets/css/styles.css" />
-    <link rel="stylesheet" href="assets/css/qr-generator.css" />
+    <title>Attendance QR Code Generator</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <!-- Mobile Menu Toggle -->
-    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-        <span class="material-symbols-rounded">menu</span>
-    </button>
+    <header class="header-row">
+        <div class="text-block">
+            <h1 class="tight">Attendance QR Code Generator</h1>
+            <p class="sub-text">Create unique attendance links and QR codes for your services and events.</p>
+        </div>
+        <a href="#" id="createSessionBtn" class="button">⊕ Create New Attendance Session</a>
+    </header>
 
-    <!-- Sidebar Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="brand">
-                <span class="material-symbols-rounded church-icon-sidebar">church</span>
-                <div class="brand-text">
-                    <h2>Church Admin</h2>
-                    <span>Welcome Back</span>
-                </div>
+    <main class="faint-box" id="sectionContainer">
+        <div class="session-header">
+            <h2 id="eventTitle">Sunday Morning Service</h2>
+            <p id="eventSubText">Your attendance link and QR code have been generated successfully</p>
+        </div>
+        <div class="session-box" id="sessionBox">
+            <div class="qr-preview">
+                <div id="qrcode"></div>
             </div>
-            <ul class="menu">
-                <li>
-                    <a href="dashboard.html">
-                        <span class="icon material-symbols-rounded" aria-hidden="true">dashboard</span>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="members.html">
-                        <span class="icon material-symbols-rounded" aria-hidden="true">group</span>
-                        <span>Members</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="attendance.html">
-                        <span class="icon material-symbols-rounded" aria-hidden="true">event_available</span>
-                        <span>Attendance</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="qr-generator.html">
-                        <span class="icon material-symbols-rounded" aria-hidden="true">qr_code_2</span>
-                        <span>QR Generator</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="reports.html">
-                        <span class="icon material-symbols-rounded" aria-hidden="true">insert_chart</span>
-                        <span>Reports</span>
-                    </a>
-                </li>
-            </ul>
-            <div class="bottom">
-                <a href="settings.html" class="settings-btn">
-                    <span class="icon material-symbols-rounded" aria-hidden="true">settings</span>
-                    <span>Settings</span>
-                </a>
-                <a href="#" class="logout-btn" id="logoutBtn">
-                    <span class="icon material-symbols-rounded" aria-hidden="true">logout</span>
-                    <span>Log Out</span>
-                </a>
+            <div class="session-details">
+                <label>Attendance Link</label>
+                <div class="link-box">
+                    <input type="text" id="eventLink" readonly />
+                    <button id="copyBtn">📋</button>
+                </div>
+
+                <div class="qr-actions">
+                    <button class="small-btn download" id="downloadBtn">⬇ Download QR Code</button>
+                    <button class="small-btn share" id="shareBtn">🔗 Share</button>
+                    <button class="small-btn print" id="printBtn">🖨 Print</button>
+                </div>
+
+
             </div>
-        </aside>
+        </div>
+    </main>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Topbar -->
-            <header class="topbar">
-                <h1 class="topbar-title">QR Generator</h1>
-                <div class="profile">
-                    <div class="notification-icon">
-                        <span class="material-symbols-rounded">notifications</span>
-                        <span class="notification-dot"></span>
-                    </div>
-                    <img src="assets/images/profile.jpg" alt="Admin" />
-                    <div class="profile-info">
-                        <span class="profile-name">John Doe</span>
-                        <span class="profile-role">Admin</span>
-                    </div>
-                </div>
-            </header>
-
-            <div class="header">
-                <div>
-                    <h1>Attendance Check-in</h1>
-                    <p>Generate unique QR codes for church services.</p>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <button class="create-btn" onclick="endSession()" style="background-color: #dc3545;">⚠ End
-                        Session</button>
-                    <button class="create-btn" id="createSessionBtn">⊕ Create New Session</button>
-                </div>
-            </div>
-
-            <!-- QR Card -->
-            <div class="qr-card">
-                <div class="qr-details">
-                    <h3 id="eventTitle">Sunday Morning Service</h3>
-                    <p id="eventSubText">Your attendance link is ready.</p>
-
-                    <label>Attendance Link</label>
-                    <div class="link-box">
-                        <input type="text" id="eventLink" readonly value="https://example.com/checkin/82012" />
-                        <button class="copy-btn" id="copyBtn" title="Copy Link">📋</button>
-                    </div>
-
-                    <div class="qr-actions">
-                        <button class="download" id="downloadBtn">⬇ Download PNG</button>
-                        <button class="share" id="shareBtn">🔗 Share Link</button>
-                        <button class="print" id="printBtn">🖨 Print QR</button>
-                    </div>
-                </div>
-
-                <div class="qr-image">
-                    <div id="qrcode"></div>
-                </div>
-            </div>
-
-            <!-- Previous Sessions Table (Placeholder) -->
-            <div class="history">
-                <h3>Recent Sessions</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Session Name</th>
-                            <th>Check-ins</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Oct 20, 2024</td>
-                            <td>Sunday Morning Service</td>
-                            <td>142</td>
-                            <td><span class="status closed">Closed</span></td>
-                            <td><i class="material-symbols-rounded" style="font-size: 18px;">visibility</i></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </main>
-    </div>
-
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../main.js"></script>
-    <script>
-        // QR Generator Logic
-        const qrContainer = document.getElementById("qrcode");
-        const linkInput = document.getElementById("eventLink");
-        const createBtn = document.getElementById("createSessionBtn");
-        const title = document.getElementById("eventTitle");
-        const subText = document.getElementById("eventSubText");
-
-        createBtn.addEventListener("click", () => generateQRCode(true));
-        // Auto generate on load without prompt
-        window.onload = () => generateQRCode(false);
-
-        function generateQRCode(isManual = false) {
-            qrContainer.innerHTML = "";
-
-            let eventName = "Sunday Morning Service";
-
-            // Only ask for title if manually triggered
-            if (isManual) {
-                eventName = prompt("Enter the title for this attendance session:", "Sunday Morning Service");
-                if (!eventName || eventName.trim() === "") {
-                    eventName = "Unnamed Session";
-                }
-            } else {
-                // On load check if we have a stored one or just default
-                // For now just default
-            }
-
-            const eventId = Math.random().toString(36).substring(2, 8).toUpperCase();
-            const today = new Date();
-            const formattedDate = today.toLocaleDateString("en-US", {
-                year: "numeric", month: "long", day: "numeric"
-            });
-
-            // Use root-relative path if possible, or construct absolute from location origin
-            // NOTE: For local file testing, origin might be file:// which is tricky.
-
-            let baseUrl = window.location.origin;
-            // Adjust logic to find the 'user-pages' folder relative to 'admin-dashboard'
-            // If we are at .../FRONTEND/admin-dashboard/qr-generator.html
-            // We want .../FRONTEND/user-pages/check-in.html
-
-            // Simple heuristic: replace 'admin-dashboard' with 'user-pages' in current path
-            let currentPath = window.location.pathname;
-            let checkInPath = currentPath.replace('admin-dashboard/qr-generator.html', 'user-pages/check-in.html');
-            // Handle trailing slash edge cases if any
-            if (checkInPath === currentPath) {
-                // Fallback if path structure is different
-                checkInPath = '/FRONTEND/user-pages/check-in.html';
-            }
-
-            const eventURL = `${baseUrl}${checkInPath}?session=${eventId}&service=${encodeURIComponent(eventName)}`;
-
-            title.textContent = `${eventName} - ${formattedDate}`;
-            subText.textContent = "Your attendance link key: " + eventId;
-            linkInput.value = eventURL;
-
-            new QRCode(qrContainer, {
-                text: eventURL,
-                width: 180,
-                height: 180,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-        }
-
-        // Copy
-        document.getElementById("copyBtn").onclick = () => {
-            if (!linkInput.value) return;
-            navigator.clipboard.writeText(linkInput.value);
-            alert("Link copied!");
-        };
-
-        // Download
-        document.getElementById("downloadBtn").onclick = () => {
-            const img = qrContainer.querySelector("img");
-            if (!img) return alert("Generate QR first!");
-            const link = document.createElement("a");
-            link.href = img.src;
-            link.download = "attendance_qr.png";
-            link.click();
-        };
-
-        // Print
-        document.getElementById("printBtn").onclick = () => {
-            const img = qrContainer.querySelector("img");
-            if (!img) return;
-            const win = window.open('');
-            win.document.write(`<div style="text-align:center; padding: 50px;">
-           <h2>${title.textContent}</h2>
-           <img src="${img.src}" style="width:300px;">
-           <p>${linkInput.value}</p>
-         </div>`);
-            win.document.close();
-            win.print();
-        };
-
-        // Share
-        document.getElementById("shareBtn").onclick = async () => {
-            if (navigator.share) {
-                await navigator.share({
-                    title: title.textContent,
-                    url: linkInput.value
-                });
-            } else {
-                alert('Sharing not supported on this device');
-            }
-        };
-
-        // --- END SESSION LOGIC ---
-        // 1. Add End Session Button Listener (we need to create the button first if not exists, but I'll add it in HTML structure update or assume it's there. 
-        //    Wait, I should add the button in the HTML first. I'll add a separate tool call for HTML button? 
-        //    No, I can't edit HTML and JS in one go if they are far apart.
-        //    I will add the logic function here and bind it, assuming I add the button in next step or use existing if any.)
-
-        async function endSession() {
-            const eventName = title.textContent.split(' - ')[0] || 'Sunday Service'; // Extract name
-            const today = new Date().toISOString().split('T')[0];
-
-            const confirmEnd = confirm(`Are you sure you want to end session "${eventName}"? All members not checked in will be marked as 'Absent'.`);
-            if (!confirmEnd) return;
-
-            // Show loading state...
-            alert("Processing... this might take a moment.");
-
-            try {
-                // 1. Fetch All Members
-                const { data: allMembers, error: memError } = await supabase
-                    .from('Members')
-                    .select('full_name, department');
-
-                if (memError) throw memError;
-
-                if (!allMembers || allMembers.length === 0) {
-                    alert("No members found in the database.");
-                    return;
-                }
-
-                // 2. Fetch Existing Records (Present OR Absent) for Today & Service
-                const { data: existingRecords, error: attError } = await supabase
-                    .from('Attendance')
-                    .select('member_name, status')
-                    .eq('date', today)
-                    .eq('service', eventName);
-
-                if (attError) throw attError;
-
-                // Create a Set of names already recorded to avoid duplicates
-                const recordedNames = new Set(existingRecords.map(a => a.member_name.toLowerCase().trim()));
-
-                // 3. Filter Members who have NO record yet
-                const unaccountedMembers = allMembers.filter(m => {
-                    const name = m.full_name.toLowerCase().trim();
-                    return !recordedNames.has(name);
-                });
-
-                if (unaccountedMembers.length === 0) {
-                    // Everyone has a record
-                    const presentCount = existingRecords.filter(r => r.status === 'Present').length;
-                    const absentCount = existingRecords.filter(r => r.status === 'Absent').length;
-
-                    alert(`Session Ended. All ${allMembers.length} members are already accounted for.\n(Present: ${presentCount}, Absent: ${absentCount})\n\nHint: If you wanted to start a NEW session, please create one with a different title.`);
-                    return;
-                }
-
-                // 4. Bulk Insert Absent Records for Unaccounted Members
-                const absentRecords = unaccountedMembers.map(m => ({
-                    member_name: m.full_name,
-                    department: m.department,
-                    status: 'Absent',
-                    service: eventName,
-                    date: today
-                }));
-
-                const { error: insertError } = await supabase
-                    .from('Attendance')
-                    .insert(absentRecords);
-
-                if (insertError) throw insertError;
-
-                const newAbsentCount = absentRecords.length;
-                const totalPresent = existingRecords.filter(r => r.status === 'Present').length;
-
-                alert(`Session Ended Successfully.\n\n• Marked Absent: ${newAbsentCount}\n• Previously Checked In: ${totalPresent}\n• Total Processed: ${newAbsentCount + existingRecords.length}`);
-
-            } catch (err) {
-                console.error("End session error:", err);
-                alert("Error ending session: " + err.message);
-            }
-        }
-
-        // Expose to window or bind if button exists
-        window.endSession = endSession;
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
+
+
+<button class="small-btn download"></button>
+<button class="small-btn share"></button>
+<button class="small-btn print">Print</button>
+
+
+
+
+style.css
+
+body {
+font-family: "Segoe UI", Arial, sans-serif;
+background: #f5f7fb;
+color: #333;
+margin: 0;
+padding: 0;
+}
+
+.header-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 30px 60px;
+background: white;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.text-block h1 {
+margin: 0;
+font-size: 1.6rem;
+color: #1e3a8a;
+}
+
+.sub-text {
+color: #555;
+font-size: 0.95rem;
+}
+
+.button {
+background-color: #2563eb;
+color: white;
+text-decoration: none;
+padding: 12px 18px;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 600;
+font-size: 15px;
+transition: transform 0.3s ease, background 0.25s ease;
+display: inline-block;
+}
+
+.button:hover {
+background-color: #da70b7;
+transform: scale(1.08);
+}
+
+.faint-box {
+width: 85%;
+margin: 40px auto;
+background: white;
+border-radius: 16px;
+box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+padding: 40px 60px;
+}
+
+.session-header {
+text-align: left;
+margin-bottom: 25px;
+}
+
+.session-header h2 {
+color: #1e3a8a;
+font-size: 1.4rem;
+margin-bottom: 6px;
+}
+
+.session-header p {
+color: #555;
+font-size: 0.95rem;
+margin: 0;
+}
+
+.session-box {
+display: flex;
+align-items: center;
+justify-content: flex-start;
+gap: 40px;
+background: linear-gradient(145deg, #fff, #f8faff);
+border-radius: 14px;
+padding: 30px 40px;
+box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+margin-top: 25px;
+}
+
+.text-part {
+flex: 1;
+padding-right: 20px;
+}
+
+.text-part h2 {
+color: #007acc;
+margin-top: 0;
+}
+
+.url-display {
+font-size: 13px;
+color: #555;
+margin: 10px 0;
+word-break: break-all;
+}
+
+.qr-preview {
+background: #fbeee8;
+border-radius: 16px;
+padding: 20px;
+box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.05);
+display: flex;
+justify-content: center;
+align-items: center;
+min-width: 180px;
+min-height: 180px;
+}
+
+#qrcode {
+width: 150px;
+height: 150px;
+}
+
+.session-details {
+flex: 1;
+}
+
+label {
+display: block;
+font-weight: 600;
+margin-bottom: 8px;
+}
+
+.link-box {
+display: flex;
+align-items: center;
+background: #f1f3f9;
+border: 1px solid #e0e5ef;
+border-radius: 8px;
+padding: 8px;
+}
+
+.link-box input {
+flex: 1;
+border: none;
+background: transparent;
+font-size: 0.95rem;
+padding: 6px;
+outline: none;
+}
+
+.link-box button {
+border: none;
+background: transparent;
+font-size: 1rem;
+cursor: pointer;
+}
+
+.button-row {
+margin-top: 16px;
+display: flex;
+gap: 10px;
+}
+
+.btn {
+border: none;
+padding: 10px 18px;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 600;
+transition: 0.2s;
+}
+
+.btn.primary {
+background: #2563eb;
+color: white;
+}
+
+.btn.primary:hover {
+background: #1e40af;
+}
+
+.btn:hover {
+background: #e5e7eb;
+}
+
+.info-text {
+font-size: 13px;
+color: #555;
+margin-top: 12px;
+font-style: italic;
+}
+
+.note-text {
+font-size: 13px;
+color: #777;
+margin-top: 10px;
+}
+
+.qr-actions {
+margin-top: 16px;
+display: flex;
+gap: 10px;
+}
+
+.qr-actions .small-btn {
+border: none;
+border-radius: 8px;
+padding: 10px 16px;
+font-size: 14px;
+font-weight: 600;
+color: white;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+
+.small-btn.download {
+background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+.small-btn.share {
+background: linear-gradient(135deg, #6c63ff, #4b47d4);
+}
+.small-btn.print {
+background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+}
+
+.small-btn.download:hover {
+transform: scale(1.08);
+background: linear-gradient(135deg, #27ae60, #2ecc71);
+box-shadow: 0 4px 10px rgba(46, 204, 113, 0.4);
+}
+
+.small-btn.share:hover {
+transform: scale(1.08);
+background: linear-gradient(135deg, #4b47d4, #6c63ff);
+box-shadow: 0 4px 10px rgba(108, 99, 255, 0.4);
+}
+
+.small-btn.print:hover {
+transform: scale(1.08);
+background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+box-shadow: 0 4px 10px rgba(127, 140, 141, 0.4);
+}
+
+
+
+const qrContainer = document.getElementById("qrcode");
+const linkInput = document.getElementById("eventLink");
+const createBtn = document.getElementById("createSessionBtn");
+const title = document.getElementById("eventTitle");
+const subText = document.getElementById("eventSubText");
+
+createBtn.addEventListener("click", generateQRCode);
+window.onload = generateQRCode;
+
+function generateQRCode() {
+qrContainer.innerHTML = "";
+
+// Ask for session title
+let eventName = prompt("Enter the title for this attendance session:", "Sunday Morning Service");
+if (!eventName || eventName.trim() === "") {
+eventName = "Unnamed Session";
+}
+
+const eventId = Math.random().toString(36).substring(2, 8).toUpperCase();
+const today = new Date();
+const formattedDate = today.toLocaleDateString("en-US", {
+year: "numeric",
+month: "long",
+day: "numeric"
+});
+
+const eventURL = `https://ROSA-KNUST/attendance/session/${eventId}`;
+
+title.textContent = `${eventName} - ${formattedDate}`;
+subText.textContent = "Your attendance link and QR code have been generated successfully.";
+
+linkInput.value = eventURL;
+
+// Generate QR code
+new QRCode(qrContainer, {
+text: eventURL,
+width: 150,
+height: 150,
+});
+}
+
+// --- COPY LINK ---
+document.getElementById("copyBtn").onclick = () => {
+if (!linkInput.value) return alert("No link to copy yet!");
+navigator.clipboard.writeText(linkInput.value);
+alert("Link copied to clipboard!");
+};
+
+// --- DOWNLOAD QR ---
+document.getElementById("downloadBtn").onclick = () => {
+const img = qrContainer.querySelector("img");
+if (!img) return alert("Generate a QR code first!");
+const link = document.createElement("a");
+link.href = img.src;
+link.download = "attendance_qr.png";
+link.click();
+};
+
+// --- SHARE LINK ---
+document.getElementById("shareBtn").onclick = async () => {
+const link = linkInput.value;
+if (!link) return alert("Generate a link first!");
+
+if (navigator.share) {
+await navigator.share({
+title: "Attendance Check-in",
+text: "Scan this QR or use the link to check in.",
+url: link,
+});
+} else {
+await navigator.clipboard.writeText(link);
+alert("Sharing not supported on this device.\nLink copied to clipboard instead!");
+}
+};
+
+
+
+script.js
+
+
+// --- PRINT QR ---
+document.getElementById("printBtn").onclick = () => {
+const qrImg = qrContainer.querySelector("img");
+if (!qrImg) return alert("Generate a QR code first!");
+
+const newWin = window.open("");
+newWin.document.write(`
+<html>
+
+<head>
+    <title>Print QR Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 40px;
+        }
+
+        img {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>${title.textContent}</h3>
+    <img src="${qrImg.src}" alt="QR Code"><br>
+    <p>${linkInput.value}</p>
+</body>
+
+</html>
+`);
+newWin.document.close();
+newWin.print();
+};
