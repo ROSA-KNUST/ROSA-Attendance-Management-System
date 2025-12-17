@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check In | Attendance</title>
+    <link rel="stylesheet" href="./style/form-page.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+
+<body>
+    <div class="form-container">
+        <div class="icon">
+            <span style="font-size: xx-large;" class="material-symbols-rounded church-icon-sidebar">church</span>
+        </div>
+        <h2>Attendance Check-in</h2>
+        <p>Please enter your phone number to check in.</p>
+
+        <form id="checkInForm">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter your phone number" required>
+
+            <button type="submit">Check In</button>
+        </form>
+
+        <div id="message" style="margin-top: 20px; padding: 10px; display: none;"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../main.js"></script>
+    <script src="check-in.js"></script>
+</body>
+
+</html>

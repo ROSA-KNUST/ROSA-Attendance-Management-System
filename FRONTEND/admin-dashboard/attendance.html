@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Church Admin - Attendance</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/attendance.css" />
 </head>
+
 <body>
   <!-- Mobile Menu Toggle -->
   <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
@@ -60,7 +63,7 @@
         </li>
       </ul>
       <div class="bottom">
-        <a href="settings.html" class="settings-btn">  
+        <a href="settings.html" class="settings-btn">
           <span class="icon material-symbols-rounded" aria-hidden="true">settings</span>
           <span>Settings</span>
         </a>
@@ -92,21 +95,36 @@
         <!-- Filters -->
         <div class="filters">
           <div class="filter-item">
-            <label>Date Range</label>
+            <label>Date</label>
             <div class="input-box">
               <span class="icon">📅</span>
-              <input type="text" value="Oct 5, 2024 - Oct 30, 2024" readonly>
+              <input type="date" id="dateFilter">
             </div>
           </div>
 
           <div class="filter-item">
             <label>Department</label>
-            <input type="text" placeholder="All Departments" readonly>
+            <select id="deptFilter" style="width: 100%; padding: 10px; border: 1px solid #e1e1e1; border-radius: 8px;">
+              <option value="">All Departments</option>
+              <!-- Populated dynamically or hardcoded common ones -->
+              <option value="Choir">Choir</option>
+              <option value="Ushering">Ushering</option>
+              <option value="Media">Media</option>
+              <option value="Protocol">Protocol</option>
+              <option value="Technical">Technical</option>
+            </select>
           </div>
 
           <div class="filter-item">
             <label>Service Type</label>
-            <input type="text" placeholder="All Services" readonly>
+            <select id="serviceFilter"
+              style="width: 100%; padding: 10px; border: 1px solid #e1e1e1; border-radius: 8px;">
+              <option value="">All Services</option>
+              <option value="Sunday Morning Service">Sunday Morning Service</option>
+              <option value="Sunday Evening Service">Sunday Evening Service</option>
+              <option value="Mid-week Service">Mid-week Service</option>
+              <option value="Special Event">Special Event</option>
+            </select>
           </div>
 
           <button class="apply-btn">Apply Filters</button>
@@ -131,57 +149,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Oct 27, 2024</td>
-                <td>Sunday Service</td>
-                <td>John Doe</td>
-                <td>Youth Ministry</td>
-                <td>9:01 AM</td>
-                <td><span class="status present">Present</span></td>
-              </tr>
-              <tr>
-                <td>Oct 27, 2024</td>
-                <td>Sunday Service</td>
-                <td>Jane Smith</td>
-                <td>Choir</td>
-                <td>9:05 AM</td>
-                <td><span class="status present">Present</span></td>
-              </tr>
-              <tr>
-                <td>Oct 24, 2024</td>
-                <td>Mid-week Prayer</td>
-                <td>Michael Johnson</td>
-                <td>Ushers</td>
-                <td>—</td>
-                <td><span class="status absent">Absent</span></td>
-              </tr>
-              <tr>
-                <td>Oct 20, 2024</td>
-                <td>Sunday Service</td>
-                <td>Emily Davis</td>
-                <td>Children's Church</td>
-                <td>9:15 AM</td>
-                <td><span class="status present">Present</span></td>
-              </tr>
-              <tr>
-                <td>Oct 20, 2024</td>
-                <td>Sunday Service</td>
-                <td>David Wilson</td>
-                <td>Media Team</td>
-                <td>8:55 AM</td>
-                <td><span class="status present">Present</span></td>
-              </tr>
+              <!-- Rows will be populated by JS -->
             </tbody>
           </table>
 
           <div class="table-footer">
-            <p>Showing 1 to 5 of 24 records</p>
+            <p id="pageInfo">Showing 0 records</p>
             <div class="pagination">
-              <button class="page-btn active">1</button>
-              <button class="page-btn">2</button>
-              <button class="page-btn">3</button>
-              <span>...</span>
-              <button class="page-btn">5</button>
+              <button class="page-btn" id="prevBtn">Prev</button>
+              <button class="page-btn" id="nextBtn">Next</button>
             </div>
           </div>
         </div>
@@ -189,7 +165,9 @@
     </main>
   </div>
 
-  <script src="assets/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../main.js"></script>
   <script src="assets/js/attendance.js"></script>
 </body>
+
 </html>

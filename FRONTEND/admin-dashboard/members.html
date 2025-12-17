@@ -92,14 +92,14 @@
       <div class="top-bar">
         <div class="search-box">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" placeholder="Search members..." />
+          <input type="text" id="searchInput" placeholder="Search members..." />
         </div>
 
         <div class="buttons">
           <button class="filter-btn">
             <i class="fa-solid fa-sliders"></i> Filters
           </button>
-          <button class="add-btn">
+          <button class="add-btn" id="addMemberBtn">
             + Add New Member
           </button>
         </div>
@@ -117,110 +117,30 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="membersTableBody">
+            <!-- Loading state -->
             <tr>
-              <td><input type="checkbox" /></td>
-              <td>
-                <div class="member-info">
-                  <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="">
-                  <span>John Doe</span>
-                </div>
+              <td colspan="6" style="text-align: center; padding: 40px;">
+                <p>Loading members...</p>
               </td>
-              <td class="blue-text">Youth Ministry</td>
-              <td><span class="status active">Active</span></td>
-              <td>2023-03-15</td>
-              <td><i class="fa-solid fa-ellipsis"></i></td>
             </tr>
-
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>
-                <div class="member-info">
-                  <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="">
-                  <span>Jane Smith</span>
-                </div>
-              </td>
-              <td class="blue-text">Choir</td>
-              <td><span class="status active">Active</span></td>
-              <td>2022-11-20</td>
-              <td><i class="fa-solid fa-ellipsis"></i></td>
-            </tr>
-
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>
-                <div class="member-info">
-                  <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="">
-                  <span>Michael Brown</span>
-                </div>
-              </td>
-              <td class="blue-text">Ushering</td>
-              <td><span class="status inactive">Inactive</span></td>
-              <td>2021-01-10</td>
-              <td><i class="fa-solid fa-ellipsis"></i></td>
-            </tr>
-
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>
-                <div class="member-info">
-                  <img src="https://randomuser.me/api/portraits/women/4.jpg" alt="">
-                  <span>Emily Johnson</span>
-                </div>
-              </td>
-              <td class="blue-text">Youth Ministry</td>
-              <td><span class="status active">Active</span></td>
-              <td>2023-08-05</td>
-              <td><i class="fa-solid fa-ellipsis"></i></td>
-            </tr>
-
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>
-                <div class="member-info">
-                  <img src="https://randomuser.me/api/portraits/men/5.jpg" alt="">
-                  <span>David Wilson</span>
-                </div>
-              </td>
-              <td class="blue-text">Choir</td>
-              <td><span class="status visitor">Visitor</span></td>
-              <td>2024-02-18</td>
-              <td><i class="fa-solid fa-ellipsis"></i></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>
-                <div class="member-info">
-                  <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="">
-                  <span>John Doe</span>
-                </div>
-              </td>
-              <td class="blue-text">Youth Ministry</td>
-              <td><span class="status active">Active</span></td>
-              <td>2023-03-15</td>
-              <td><i class="fa-solid fa-ellipsis"></i></td>
-            </tr>
-
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>
-                <div class="member-info">
-                  <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="">
-                  <span>Jane Smith</span>
-                </div>
-              </td>
-              <td class="blue-text">Choir</td>
-              <td><span class="status active">Active</span></td>
-              <td>2022-11-20</td>
-              <td><i class="fa-solid fa-ellipsis"></i></td>
-            </tr>
-
           </tbody>
         </table>
       </div>
     </main>
   </div>
 
-  <script src="assets/js/main.js"></script>
+  <!-- Member Details Modal -->
+  <div id="memberModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+    <div style="background-color: white; margin: 5% auto; padding: 30px; border-radius: 8px; width: 90%; max-width: 500px; position: relative;">
+      <span id="closeModal" style="position: absolute; right: 20px; top: 20px; font-size: 28px; cursor: pointer; color: #666;">&times;</span>
+      <h2 style="margin-bottom: 20px;">Member Details</h2>
+      <div id="memberDetails"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../main.js"></script>
 </body>
 </html>
