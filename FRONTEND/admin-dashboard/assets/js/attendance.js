@@ -40,7 +40,7 @@ async function fetchAttendanceRecords() {
     console.log('Filters:', { dateVal, deptVal, serviceVal });
 
     // Build Query
-    let query = supabase
+    let query = supabaseClient
       .from('Attendance')
       .select('*')
       .order('date', { ascending: false })

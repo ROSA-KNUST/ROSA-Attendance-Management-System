@@ -1,9 +1,13 @@
+console.log("Main.js loaded! Supabase init starting...");
 // Initialize Supabase client
 const SUPABASE_URL = 'https://xrubwkctffocraifwnkc.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhydWJ3a2N0ZmZvY3JhaWZ3bmtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU2NTY2MjgsImV4cCI6MjA4MTIzMjYyOH0.2Fp77O8OJY3N74W39eSQ4vLZ3OYd4qCAWBkH1t_F1E8';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-window.supabase = supabase; // Ensure global access
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+// Ensure global access
 
 // ==========================================
 // FORM SUBMISSION (for form-page.html)
@@ -52,7 +56,7 @@ if (form && messageDiv) {
 
     try {
       // Insert data into Supabase - Using 'Members' with capital M
-      const { data, error } = await supabase
+      const { data, error } = await supabaseClient
         .from('Members') // ✅ Capital M to match your table
         .insert([formData])
         .select();
@@ -66,7 +70,7 @@ if (form && messageDiv) {
       // Check if we need to mark attendance automatically
       if (urlParams.get('new_member') === 'true') {
         try {
-          const { error: attError } = await supabase
+          const { error: attError } = await supabaseClient
             .from('Attendance')
             .insert([{
               member_name: formData.full_name,
@@ -161,7 +165,7 @@ if (tableBody && searchInput && addBtn) {
   // Function to fetch members from Supabase
   async function fetchMembers(searchTerm = '') {
     try {
-      let query = supabase
+      let query = supabaseClient
         .from('Members') // ✅ CHANGED: Capital M to match your table
         .select('*')
         .order('created_at', { ascending: false });

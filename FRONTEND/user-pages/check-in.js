@@ -20,7 +20,7 @@
             try {
                 // Query Member by phone using global supabase client from main.js
                 // Using 'Members' table as seen in main.js
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('Members')
                     .select('*')
                     .eq('phone_number', phone)

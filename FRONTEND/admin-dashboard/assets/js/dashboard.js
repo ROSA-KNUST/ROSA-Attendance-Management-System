@@ -62,7 +62,7 @@ function initCharts() {
 async function fetchDashboardData() {
   try {
     // 1. Total Members
-    const { count: totalMembers, error: err1 } = await supabase
+    const { count: totalMembers, error: err1 } = await supabaseClient
       .from('Members')
       .select('*', { count: 'exact', head: true });
 
@@ -70,7 +70,7 @@ async function fetchDashboardData() {
 
     // 2. New Members (This Month)
     const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
-    const { count: newMembers, error: err2 } = await supabase
+    const { count: newMembers, error: err2 } = await supabaseClient
       .from('Members')
       .select('*', { count: 'exact', head: true })
       .gte('created_at', startOfMonth);
@@ -80,7 +80,7 @@ async function fetchDashboardData() {
     // 3. Departments Count
     // Supabase doesn't have a direct "distinct count" in one query easily without RPC, 
     // getting all departments and counting unique sets in JS for now (assuming < 10k members)
-    const { data: deptData, error: err3 } = await supabase
+    const { data: deptData, error: err3 } = await supabaseClient
       .from('Members')
       .select('department');
 
@@ -92,7 +92,7 @@ async function fetchDashboardData() {
     // 4. Attendance Stats & Charts
     // Fetch aggregated attendance data
     // For line chart: last 6 "events" (dates) aggregated
-    const { data: attendanceData, error: err4 } = await supabase
+    const { data: attendanceData, error: err4 } = await supabaseClient
       .from('Attendance')
       .select('date, status, service')
       .order('date', { ascending: true }); // Get all to process
